@@ -1,0 +1,34 @@
+{
+  "name": "@armosec/yamlparse",
+  "version": "0.1.0",
+  "description": "Parse yaml configuration",
+  "publisher": "armosec",
+  "author": {
+      "name": "David Delarosa",
+      "email": "xdavidel@gmail.com"
+  },
+  "main": "out/src/index.js",
+  "files": [
+    "out/src/index.d.ts"
+  ],
+  "scripts": {
+    "compile": "tsc -watch -p ./",
+    "test": "tsc -p ./ && tape -r source-map-support/register 'out/test/**/*.js' | tap-spec",
+    "prepare": "tsc -p ./"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/armosec/node-yamlparse.git"
+  },
+  "keywords": [
+    "yaml",
+    "kubernetes"
+  ],
+  "license": "Apache-2.0",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "@types/node": "^13.13.4",
+    "typescript": "^3.8.3"
+  }
+}
