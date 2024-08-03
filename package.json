@@ -1,12 +1,18 @@
 {
-  "name": "@armosec/yamlparse",
+  "name": "@kubescape/yamlparse",
   "version": "0.1.0",
   "description": "Parse yaml configuration",
-  "publisher": "armosec",
+  "publisher": "kubescape",
   "author": {
       "name": "David Delarosa",
       "email": "xdavidel@gmail.com"
   },
+  "maintainers": [
+    {
+      "name": "Amir Malka",
+      "email": "amirm@armosec.io"
+    }
+  ],
   "main": "out/src/index.js",
   "files": [
     "out/src/index.d.ts"
@@ -18,7 +24,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/armosec/node-yamlparse.git"
+    "url": "git+https://github.com/kubescape/node-yamlparse.git",
+    "directory": "."
   },
   "keywords": [
     "yaml",

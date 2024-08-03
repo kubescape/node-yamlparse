@@ -18,16 +18,16 @@ export class YamlHighlighter {
 
   static splitPathToSteps(path: string): string[] {
     const splitRegExp = new RegExp(/[a-zA-Z]+|\[[^[]+]/, 'g');
+    const trimRegExp = new RegExp(/[^[\]\d]+/);
 
     return path.match(splitRegExp)?.reduce((acc: string[], step: string) => {
-      const trimRegExp = new RegExp(/[^[\]\d]+/);
-
-      if (trimRegExp.test(step)) {
-        acc.push(trimRegExp.exec(step)?.[0] || '');
-      } else {
+      const trimRegExpResult: RegExpExecArray | null = trimRegExp.exec(step);
+      if(trimRegExpResult) {
+        acc.push(trimRegExpResult[0]);
+      }
+      else{
         acc[acc.length - 1] = acc[acc.length - 1] + step;
       }
-
       return acc;
     }, []) || [];
   }
@@ -42,24 +42,35 @@ export class YamlHighlighter {
 
 
   static getStartIndexAcc(steps: string[], lines: string[]): startIndexAccType {
+
     const indentArray = '- ';
-    // const indentArray = '  - ';
     const regExpForArray = new RegExp(/\[\d+]/);
     const regExpForArrayIndex = new RegExp(/\d+/);
 
+    let flag = false;
     return steps.reduce((startIndexAcc: startIndexAccType, step: string, stepIndex: number) => {
+      if(flag){
+        return startIndexAcc;
+      }
       const stepWithOutArr = step.replace(regExpForArray, '') + ':';
 
       if (startIndexAcc.tempMatch) {
-        handleArrayMatch(startIndexAcc, lines, indentArray, stepWithOutArr);
+        handleArrayMatch(startIndexAcc, lines, indentArray, indentArray);
       } else {
-        startIndexAcc.startIndex = lines.findIndex((line: string, indexLine: number) => {
+        let temp = lines.findIndex((line: string, indexLine: number) => {
           if (indexLine > startIndexAcc.startIndex) {
             return checkAndUpdateIndent(startIndexAcc, line.indexOf(stepWithOutArr))
           }
 
           return false;
         });
+        if(temp !== -1){
+          startIndexAcc.startIndex = temp;
+        }
+        else{
+          flag = true;
+          return startIndexAcc;
+        }
       }
 
       startIndexAcc.tempMatch = step.match(regExpForArrayIndex);
